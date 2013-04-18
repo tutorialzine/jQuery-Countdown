@@ -39,26 +39,26 @@
 			
 			// Number of days left
 			d = Math.floor(left / days);
-			updateDuo(0, 1, d);
+    		updateTrio(0, 1, 2, d);
 			left -= d*days;
-			
+
 			// Number of hours left
 			h = Math.floor(left / hours);
-			updateDuo(2, 3, h);
+			updateDuo(3, 4, h);
 			left -= h*hours;
-			
+
 			// Number of minutes left
 			m = Math.floor(left / minutes);
-			updateDuo(4, 5, m);
+			updateDuo(5, 6, m);
 			left -= m*minutes;
-			
+
 			// Number of seconds left
 			s = left;
-			updateDuo(6, 7, s);
-			
+			updateDuo(7, 8, s);
+
 			// Calling an optional user supplied callback
 			options.callback(d, h, m, s);
-			
+
 			// Scheduling another call of this function in 1s
 			setTimeout(tick, 1000);
 		})();
@@ -68,6 +68,12 @@
 			switchDigit(positions.eq(minor),Math.floor(value/10)%10);
 			switchDigit(positions.eq(major),value%10);
 		}
+        
+        function updateTrio(minor, middle, major, value) {
+            switchDigit(positions.eq(minor),Math.floor(value/100)%10);
+            switchDigit(positions.eq(middle),Math.floor(value/10)%10);
+    		switchDigit(positions.eq(major),value%10);
+        }
 		
 		return this;
 	};
@@ -78,14 +84,28 @@
 
 		// Creating the markup inside the container
 		$.each(['Days','Hours','Minutes','Seconds'],function(i){
-			$('<span class="count'+this+'">').html(
-				'<span class="position">\
-					<span class="digit static">0</span>\
-				</span>\
-				<span class="position">\
-					<span class="digit static">0</span>\
-				</span>'
-			).appendTo(elem);
+			if (this=="Days") {
+                $('<span class="count'+this+'">').html(
+                    '<span class="position">\
+                        <span class="digit static">0</span>\
+                    </span>\
+                    <span class="position">\
+                        <span class="digit static">0</span>\
+                    </span>\
+                    <span class="position">\
+                        <span class="digit static">0</span>\
+                    </span>'
+                ).appendTo(elem);
+            } else {
+                $('<span class="count'+this+'">').html(
+                    '<span class="position">\
+                        <span class="digit static">0</span>\
+                    </span>\
+                    <span class="position">\
+                        <span class="digit static">0</span>\
+                    </span>'
+                ).appendTo(elem);
+            }
 			
 			if(this!="Seconds"){
 				elem.append('<span class="countDiv countDiv'+i+'"></span>');
