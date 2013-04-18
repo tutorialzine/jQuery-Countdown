@@ -6,40 +6,40 @@
  * @license		MIT License
  */
 
-(function($){
-	
+(function(jQuery){
+
 	// Number of seconds in every time division
 	var days	= 24*60*60,
 		hours	= 60*60,
 		minutes	= 60;
-	
+
 	// Creating the plugin
-	$.fn.countdown = function(prop){
-		
-		var options = $.extend({
+	jQuery.fn.countdown = function(prop){
+
+		var options = jQuery.extend({
 			callback	: function(){},
 			timestamp	: 0
 		},prop);
-		
+
 		var left, d, h, m, s, positions;
 
 		// Initialize the plugin
 		init(this, options);
-		
+
 		positions = this.find('.position');
-		
+
 		(function tick(){
-			
+
 			// Time left
 			left = Math.floor((options.timestamp - (new Date())) / 1000);
-			
+
 			if(left < 0){
 				left = 0;
 			}
-			
+
 			// Number of days left
 			d = Math.floor(left / days);
-    		updateTrio(0, 1, 2, d);
+			updateTrio(0, 1, 2, d);
 			left -= d*days;
 
 			// Number of hours left
@@ -62,19 +62,19 @@
 			// Scheduling another call of this function in 1s
 			setTimeout(tick, 1000);
 		})();
-		
+
 		// This function updates two digit positions at once
 		function updateDuo(minor,major,value){
-			switchDigit(positions.eq(minor),Math.floor(value/10)%10);
-			switchDigit(positions.eq(major),value%10);
+			switchDigit(positions.eq(minor),Math.floor(value/10)%10, minor);
+			switchDigit(positions.eq(major),value%10, major);
 		}
-        
+
         function updateTrio(minor, middle, major, value) {
-            switchDigit(positions.eq(minor),Math.floor(value/100)%10);
-            switchDigit(positions.eq(middle),Math.floor(value/10)%10);
-    		switchDigit(positions.eq(major),value%10);
+            switchDigit(positions.eq(minor),Math.floor(value/100)%10, minor);
+            switchDigit(positions.eq(middle),Math.floor(value/10)%10), middle;
+			switchDigit(positions.eq(major),value%10, major);
         }
-		
+
 		return this;
 	};
 
@@ -83,9 +83,9 @@
 		elem.addClass('countdownHolder');
 
 		// Creating the markup inside the container
-		$.each(['Days','Hours','Minutes','Seconds'],function(i){
-			if (this=="Days") {
-                $('<span class="count'+this+'">').html(
+		jQuery.each(['Days','Hours','Minutes','Seconds'],function(i){
+            if (this=="Days") {
+                jQuery('<span class="count'+this+'"></span>').html(
                     '<span class="position">\
                         <span class="digit static">0</span>\
                     </span>\
@@ -97,7 +97,7 @@
                     </span>'
                 ).appendTo(elem);
             } else {
-                $('<span class="count'+this+'">').html(
+                jQuery('<span class="count'+this+'"></span>').html(
                     '<span class="position">\
                         <span class="digit static">0</span>\
                     </span>\
@@ -106,7 +106,7 @@
                     </span>'
                 ).appendTo(elem);
             }
-			
+
 			if(this!="Seconds"){
 				elem.append('<span class="countDiv countDiv'+i+'"></span>');
 			}
@@ -115,22 +115,25 @@
 	}
 
 	// Creates an animated transition between the two numbers
-	function switchDigit(position,number){
-		
+	function switchDigit(position,number,index){
+
 		var digit = position.find('.digit')
-		
+
 		if(digit.is(':animated')){
 			return false;
 		}
-		
+
 		if(position.data('digit') == number){
 			// We are already showing this number
 			return false;
 		}
-		
+
+        if (number == 0 && index == 0)
+            position.hide();
+
 		position.data('digit', number);
-		
-		var replacement = $('<span>',{
+
+		var replacement = jQuery('<span>',{
 			'class':'digit',
 			css:{
 				top:'-2.1em',
@@ -138,10 +141,10 @@
 			},
 			html:number
 		});
-		
+
 		// The .static class is added when the animation
 		// completes. This makes it run smoother.
-		
+
 		digit
 			.before(replacement)
 			.removeClass('static')
