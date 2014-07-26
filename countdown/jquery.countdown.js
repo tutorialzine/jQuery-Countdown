@@ -71,7 +71,7 @@
 
         function updateTrio(minor, middle, major, value) {
             switchDigit(positions.eq(minor),Math.floor(value/100)%10, minor);
-            switchDigit(positions.eq(middle),Math.floor(value/10)%10), middle;
+            switchDigit(positions.eq(middle),Math.floor(value/10)%10, middle);
 			switchDigit(positions.eq(major),value%10, major);
         }
 
