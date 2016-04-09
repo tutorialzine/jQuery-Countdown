@@ -1,0 +1,29 @@
+{
+  "name": "jQuery-Countdown",
+  "homepage": "https://github.com/martinaglv/jQuery-Countdown",
+  "authors": [
+    "Martin Angelov"
+  ],
+  "description": "A simple jQuery plugin for creating a countdown timer.",
+  "main": "./countdown/jquery.countdown.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "countdown"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~1.11.3 || ~2.1.4"
+  }
+}
